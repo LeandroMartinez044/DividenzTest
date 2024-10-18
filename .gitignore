@@ -1,0 +1,6 @@
+target/
+.project
+.settings
+.classpath
+*.DS_Store
+.github/
