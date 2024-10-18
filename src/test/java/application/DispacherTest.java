@@ -18,11 +18,12 @@ public class DispacherTest {
         final int operatorCount = 4;
         final int supervisorCount = 3;
         final int directorCount = 3;
+
         allocator = new Allocator(operatorCount, supervisorCount, directorCount);
         
         dispatcher = new Dispatcher(allocator);
 
-         //Reflection
+         //Reflection for getting the metodos shutdown() and awaitTermination()
          Field executorField = Dispatcher.class.getDeclaredField("executorService");
          executorField.setAccessible(true); 
          executorService = (ExecutorService) executorField.get(dispatcher);
@@ -33,6 +34,7 @@ public class DispacherTest {
     @Test
     public void dispatchCall_ok()  throws Exception  {
         
+        // send 10 calls
         for (int i = 0; i < 10; i++) {
             dispatcher.dispatchCall();
         }
@@ -48,6 +50,8 @@ public class DispacherTest {
     @Test
     public void dispatchCall_more10Calls() throws Exception {
         
+        // sends 12 calls, 2 threads stays waiting, when  the first thread release it will take other call.
+        // The employee's roles are released as the threads end.
         for (int i = 0; i < 12; i++) {
             dispatcher.dispatchCall();
         }
